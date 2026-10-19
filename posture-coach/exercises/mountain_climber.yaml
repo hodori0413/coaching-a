@@ -1,0 +1,58 @@
+# 마운틴 클라이머 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/mountain_climber.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - [버그] left/right 각도 정의가 없어 횟수가 안 셈 → 엔진에서 primary를 좌우로 복제
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: mountain_climber
+display_name: 마운틴 클라이머
+type: repetition
+bilateral: true
+view: side
+description: 옆에서 찍어주세요. 좌우 다리를 따로 셉니다
+target_muscles:
+- Core
+- Hip Flexors
+- Shoulders
+equipment: Bodyweight
+difficulty: intermediate
+default_reps: 20
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_knee
+    description: Kalça açısı
+state_order:
+- tucked
+- driving
+- extended
+states:
+  extended:
+    condition: angle > 160
+  driving:
+    condition: angle > 90 and angle <= 160
+  tucked:
+    condition: angle <= 90
+counter:
+  trigger_state: tucked
+  from_state: driving
+min_rep_duration: 0.2
+feedback:
+  hips_high:
+    condition: angle < 70
+    states:
+    - tucked
+    message: 엉덩이 높이를 유지하세요
+    severity: info
+visualization:
+  lines:
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 255
+    - 0
+    - 0
+    thickness: 4

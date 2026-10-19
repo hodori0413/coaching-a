@@ -1,0 +1,56 @@
+# 점핑 잭 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/jumping_jack.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - arms_low: 원본(각도<140)은 팔을 내린 동안 내내 걸림 → 덜 올렸을 때만 표시
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: jumping_jack
+display_name: 점핑 잭
+type: repetition
+view: front
+description: 정면에서 찍어주세요
+target_muscles:
+- Full Body
+- Shoulders
+- Legs
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 20
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_elbow
+    - left_shoulder
+    - left_hip
+    description: Kol açısı
+state_order:
+- open
+- opening
+- closed
+states:
+  closed:
+    condition: angle < 30
+  opening:
+    condition: angle >= 30 and angle < 150
+  open:
+    condition: angle >= 150
+counter:
+  trigger_state: open
+  from_state: opening
+min_rep_duration: 0.3
+feedback:
+  arms_low:
+    check: rep_end
+    condition: rep_max_angle > 60 and rep_max_angle < 150
+    message: 팔을 머리 위까지 올리세요
+    severity: info
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 255
+    - 255
+    - 0
+    thickness: 4

@@ -1,0 +1,122 @@
+# 플랭크 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/plank.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - hips_too_high: 원본(각도>185)은 각도가 180을 넘을 수 없어 절대 안 걸림 → 엉덩이가 일직선보다 위인지로 판단
+#  - hips_sagging: 원본은 엉덩이가 올라가도 '처짐'으로 표시 → 아래/위 구분
+#  - good_form: 칭찬 메시지라 감점 없는 success로
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: plank
+display_name: 플랭크
+type: duration
+view: side
+description: 옆에서 찍어주세요
+target_muscles:
+- Core
+- Shoulders
+- Back
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 3
+default_sets: 1
+rest_time: 30 seconds
+benefits:
+- Strengthens core muscles
+- Improves posture
+- Builds shoulder stability
+angles:
+  body_line:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_ankle
+    description: Vücut hattı açısı
+  arm_angle:
+    points:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+    description: Kol açısı
+state_order:
+- hold
+- setup
+- rest
+states:
+  rest:
+    condition: body_line_angle < 140
+  setup:
+    condition: body_line_angle >= 140 and body_line_angle < 165
+  hold:
+    condition: body_line_angle >= 165
+hold_state: hold
+target_duration: 30
+feedback:
+  hips_too_high:
+    condition: body_line_angle < 170 and hip_line_offset < 0
+    message: 엉덩이가 너무 올라갔어요. 몸을 일직선으로
+    severity: warning
+  hips_sagging:
+    condition: body_line_angle < 170 and hip_line_offset > 0
+    message: 허리가 처졌어요. 복부에 힘을 주세요
+    severity: warning
+  good_form:
+    condition: body_line_angle >= 170
+    message: 좋은 자세예요! 유지하세요
+    severity: success
+calibration:
+  enabled: false
+smoothing:
+  enabled: true
+  window: 5
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_hip
+    color:
+    - 0
+    - 255
+    - 0
+    thickness: 3
+  - points:
+    - left_hip
+    - left_ankle
+    color:
+    - 0
+    - 255
+    - 0
+    thickness: 3
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 0
+    - 200
+    - 255
+    thickness: 2
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 0
+    - 200
+    - 255
+    thickness: 2
+  circles:
+  - point: left_shoulder
+    color:
+    - 0
+    - 255
+    - 0
+    radius: 8
+  - point: left_hip
+    color:
+    - 0
+    - 255
+    - 0
+    radius: 8
+  - point: left_ankle
+    color:
+    - 0
+    - 255
+    - 0
+    radius: 8

@@ -1,0 +1,178 @@
+# 스쿼트 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/squat.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - leaning_forward: 원본(어깨가 엉덩이보다 50px 앞)은 정상 스쿼트에서도 매번 걸림 → 체간 기울기 45° 초과로 변경 (임시 기준)
+#  - not_deep_enough: 원본은 내려가는 도중 100~130°를 지날 때마다 걸림 → 한 회가 끝났을 때 목표 깊이 미달이면 표시
+#  - knees_caving: 측면에서는 볼 수 없는 규칙이라 정면 촬영일 때만 적용, 오른쪽 무릎 규칙 추가
+#  - 폼 점수 속도 기준 추가 (원본은 스쿼트/푸시업에만 속도 감점이 있었음)
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: squat
+display_name: 스쿼트
+type: repetition
+view: side
+description: 하체 기본 운동 — 옆에서 찍어주세요
+target_muscles:
+- Quadriceps
+- Gluteus
+- Hamstrings
+equipment: Bodyweight or Barbell
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: 60 seconds
+benefits:
+- Builds lower body strength
+- Improves mobility and balance
+- Strengthens core muscles
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_knee
+    description: Sol taraf gövde-bacak açısı
+  right_side:
+    points:
+    - right_shoulder
+    - right_hip
+    - right_knee
+    description: Sağ taraf gövde-bacak açısı
+state_order:
+- ascent
+- descent
+- start
+states:
+  start:
+    condition: angle > 165
+  descent:
+    condition: angle > 90 and angle <= 165
+  ascent:
+    condition: angle <= 90
+counter:
+  trigger_state: ascent
+  from_state: descent
+min_rep_duration: 0.8
+feedback:
+  leaning_forward:
+    condition: trunk_lean > 45
+    view: side
+    states:
+    - descent
+    - ascent
+    message: 상체가 너무 숙여졌어요. 가슴을 펴세요
+    severity: warning
+  not_deep_enough:
+    check: rep_end
+    condition: rep_min_angle > 90 and rep_min_angle < 150
+    message: 더 깊이 앉으세요
+    severity: info
+  knees_caving:
+    condition: left_knee_x < left_ankle_x - 20
+    view: front
+    states:
+    - descent
+    - ascent
+    message: 왼무릎이 안으로 모여요. 무릎을 발끝 방향으로
+    severity: warning
+  knees_caving_right:
+    condition: right_knee_x > right_ankle_x + 20
+    view: front
+    states:
+    - descent
+    - ascent
+    message: 오른무릎이 안으로 모여요. 무릎을 발끝 방향으로
+    severity: warning
+form_score:
+  tempo_range:
+    min: 1.5
+    max: 6.0
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_hip
+    color:
+    - 178
+    - 102
+    - 255
+    thickness: 2
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 178
+    - 102
+    - 255
+    thickness: 2
+  - points:
+    - right_shoulder
+    - right_hip
+    color:
+    - 51
+    - 153
+    - 255
+    thickness: 2
+  - points:
+    - right_hip
+    - right_knee
+    color:
+    - 51
+    - 153
+    - 255
+    thickness: 2
+  circles:
+  - point: left_shoulder
+    color:
+    - 178
+    - 102
+    - 255
+    radius: 8
+  - point: left_hip
+    color:
+    - 178
+    - 102
+    - 255
+    radius: 8
+  - point: left_knee
+    color:
+    - 178
+    - 102
+    - 255
+    radius: 8
+  - point: right_shoulder
+    color:
+    - 51
+    - 153
+    - 255
+    radius: 8
+  - point: right_hip
+    color:
+    - 51
+    - 153
+    - 255
+    radius: 8
+  - point: right_knee
+    color:
+    - 51
+    - 153
+    - 255
+    radius: 8
+  angle_display:
+  - angle: primary
+    position: left_knee
+    offset:
+    - 10
+    - -10
+    label: Angle Left
+  - angle: right_side
+    position: right_knee
+    offset:
+    - 10
+    - -10
+    label: Angle Right

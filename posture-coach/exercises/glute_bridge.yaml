@@ -1,0 +1,64 @@
+# 글루트 브릿지 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/glute_bridge.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - incomplete: 원본(각도<160)은 누워있는 동안 내내 걸림 → 한 회가 끝났을 때 덜 올렸으면 표시
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: glute_bridge
+display_name: 글루트 브릿지
+type: repetition
+view: side
+description: 옆에서 찍어주세요
+target_muscles:
+- Glutes
+- Hamstrings
+- Core
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 12
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_knee
+    description: Kalça açısı
+state_order:
+- up
+- lift
+- down
+states:
+  down:
+    condition: angle < 120
+  lift:
+    condition: angle >= 120 and angle < 165
+  up:
+    condition: angle >= 165
+counter:
+  trigger_state: up
+  from_state: lift
+min_rep_duration: 0.8
+feedback:
+  incomplete:
+    check: rep_end
+    condition: rep_max_angle >= 130 and rep_max_angle < 165
+    message: 엉덩이를 끝까지 들어올리세요
+    severity: info
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_hip
+    color:
+    - 255
+    - 105
+    - 180
+    thickness: 4
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 255
+    - 105
+    - 180
+    thickness: 4

@@ -1,0 +1,78 @@
+# 바이셉 컬 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/bicep_curl.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - [버그] left/right 각도 정의가 없어 횟수가 안 셈 → 엔진에서 primary를 좌우로 복제
+#  - partial_rep: 원본(각도>60)은 팔을 내린 상태 내내 걸림 → 한 회가 끝났을 때 덜 올렸으면 표시
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: bicep_curl
+display_name: 바이셉 컬
+type: repetition
+bilateral: true
+view: any
+description: 좌우 팔을 따로 셉니다
+target_muscles:
+- Biceps
+- Brachialis
+equipment: Dumbbells
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: 60 seconds
+benefits:
+- Builds bicep strength
+- Improves arm definition
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+    description: Sol kol dirsek açısı
+  right_arm:
+    points:
+    - right_shoulder
+    - right_elbow
+    - right_wrist
+    description: Sağ kol dirsek açısı
+state_order:
+- flex
+- curl
+- down
+states:
+  down:
+    condition: angle > 150
+  curl:
+    condition: angle > 50 and angle <= 150
+  flex:
+    condition: angle <= 50
+counter:
+  trigger_state: flex
+  from_state: curl
+min_rep_duration: 0.8
+feedback:
+  partial_rep:
+    check: rep_end
+    condition: rep_min_angle > 50 and rep_min_angle < 120
+    message: 끝까지 들어올리세요
+    severity: info
+calibration:
+  enabled: true
+  reps: 2
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 4
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 4

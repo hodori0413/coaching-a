@@ -1,0 +1,158 @@
+# 런지 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/lunge.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - 원본은 항상 왼다리를 앞다리로 가정 → 발목이 더 앞에 있는 다리를 앞다리로 자동 선택 (front_*/back_*)
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: lunge
+display_name: 런지
+type: repetition
+view: side
+description: 옆에서 찍어주세요
+target_muscles:
+- Quadriceps
+- Gluteus
+- Hamstrings
+- Calves
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: 60 seconds
+benefits:
+- Improves balance and coordination
+- Strengthens legs unilaterally
+- Enhances hip flexibility
+angles:
+  primary:
+    points:
+    - front_hip
+    - front_knee
+    - front_ankle
+    description: 앞다리 무릎
+  back_leg:
+    points:
+    - back_hip
+    - back_knee
+    - back_ankle
+    description: 뒷다리 무릎
+  torso:
+    points:
+    - left_shoulder
+    - front_hip
+    - front_knee
+    description: 상체-앞허벅지
+state_order:
+- bottom
+- descent
+- start
+states:
+  start:
+    condition: angle > 160
+  descent:
+    condition: angle > 100 and angle <= 160
+  bottom:
+    condition: angle <= 100
+counter:
+  trigger_state: bottom
+  from_state: descent
+min_rep_duration: 1.0
+feedback:
+  knee_over_toe:
+    condition: front_knee_x > front_ankle_x + 50
+    states:
+    - descent
+    - bottom
+    message: 앞무릎이 너무 앞으로 나갔어요
+    severity: warning
+  torso_leaning:
+    condition: torso_angle < 70
+    states:
+    - descent
+    - bottom
+    message: 상체를 세워주세요
+    severity: warning
+  back_knee_touch:
+    condition: back_knee_y > back_ankle_y - 20
+    message: 뒷무릎이 바닥에 닿지 않게 하세요
+    severity: info
+form_score:
+  tempo_range:
+    min: 1.5
+    max: 6.0
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 178
+    - 102
+    - 255
+    thickness: 2
+  - points:
+    - left_knee
+    - left_ankle
+    color:
+    - 178
+    - 102
+    - 255
+    thickness: 2
+  - points:
+    - right_hip
+    - right_knee
+    color:
+    - 51
+    - 153
+    - 255
+    thickness: 2
+  - points:
+    - right_knee
+    - right_ankle
+    color:
+    - 51
+    - 153
+    - 255
+    thickness: 2
+  circles:
+  - point: left_hip
+    color:
+    - 178
+    - 102
+    - 255
+    radius: 8
+  - point: left_knee
+    color:
+    - 178
+    - 102
+    - 255
+    radius: 8
+  - point: left_ankle
+    color:
+    - 178
+    - 102
+    - 255
+    radius: 8
+  - point: right_hip
+    color:
+    - 51
+    - 153
+    - 255
+    radius: 8
+  - point: right_knee
+    color:
+    - 51
+    - 153
+    - 255
+    radius: 8
+  - point: right_ankle
+    color:
+    - 51
+    - 153
+    - 255
+    radius: 8

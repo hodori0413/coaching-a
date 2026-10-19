@@ -1,0 +1,58 @@
+# 하이 니 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/high_knees.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - [버그] left/right 각도 정의가 없어 횟수가 안 셈 → 엔진에서 primary를 좌우로 복제
+#  - knee_low: 원본(각도>110)은 다리를 내린 동안 내내 걸림 → 덜 올렸을 때만 표시
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: high_knees
+display_name: 하이 니
+type: repetition
+bilateral: true
+view: side
+description: 옆에서 찍어주세요. 좌우 다리를 따로 셉니다
+target_muscles:
+- Hip Flexors
+- Quads
+- Core
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 20
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_knee
+    description: Sol kalça açısı
+state_order:
+- up
+- lift
+- down
+states:
+  down:
+    condition: angle > 150
+  lift:
+    condition: angle > 100 and angle <= 150
+  up:
+    condition: angle <= 100
+counter:
+  trigger_state: up
+  from_state: lift
+min_rep_duration: 0.2
+feedback:
+  knee_low:
+    check: rep_end
+    condition: rep_min_angle > 100 and rep_min_angle < 140
+    message: 무릎을 더 높이 올리세요
+    severity: info
+visualization:
+  lines:
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 255
+    - 0
+    - 0
+    thickness: 4

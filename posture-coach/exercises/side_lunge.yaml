@@ -1,0 +1,112 @@
+# 사이드 런지 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/side_lunge.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - 정면 촬영 전용으로 지정
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: side_lunge
+display_name: 사이드 런지
+type: repetition
+view: front
+auto_side: false
+description: 정면에서 찍어주세요 (왼쪽으로 앉는 동작 기준)
+target_muscles:
+- Quadriceps
+- Gluteus
+- Adductors
+- Hip Flexors
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: 60 seconds
+benefits:
+- Improves lateral movement
+- Strengthens inner thigh
+- Enhances hip mobility
+angles:
+  primary:
+    points:
+    - left_hip
+    - left_knee
+    - left_ankle
+    description: Bükülen bacak diz açısı
+  standing_leg:
+    points:
+    - right_hip
+    - right_knee
+    - right_ankle
+    description: Sabit bacak açısı
+state_order:
+- bottom
+- descent
+- start
+states:
+  start:
+    condition: angle > 160
+  descent:
+    condition: angle > 100 and angle <= 160
+  bottom:
+    condition: angle <= 100
+counter:
+  trigger_state: bottom
+  from_state: descent
+min_rep_duration: 1.0
+feedback:
+  knee_caving:
+    condition: left_knee_x < left_ankle_x
+    states:
+    - descent
+    - bottom
+    message: 무릎이 안으로 모여요
+    severity: warning
+  standing_leg_bent:
+    condition: standing_leg_angle < 160
+    states:
+    - descent
+    - bottom
+    message: 반대쪽 다리는 펴주세요
+    severity: warning
+form_score:
+  tempo_range:
+    min: 1.5
+    max: 6.0
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 255
+    - 100
+    - 100
+    thickness: 2
+  - points:
+    - left_knee
+    - left_ankle
+    color:
+    - 255
+    - 100
+    - 100
+    thickness: 2
+  - points:
+    - right_hip
+    - right_knee
+    color:
+    - 100
+    - 100
+    - 255
+    thickness: 2
+  - points:
+    - right_knee
+    - right_ankle
+    color:
+    - 100
+    - 100
+    - 255
+    thickness: 2

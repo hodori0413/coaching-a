@@ -1,0 +1,66 @@
+# 트라이셉 딥 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/tricep_dip.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - rest_state: up
+#  - shallow: 원본(각도>100)은 팔을 편 동안 내내 걸림 → 덜 내려갔을 때만 표시
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: tricep_dip
+display_name: 트라이셉 딥
+type: repetition
+view: side
+description: 옆에서 찍어주세요
+target_muscles:
+- Triceps
+- Shoulders
+- Chest
+equipment: Chair or Bench
+difficulty: intermediate
+default_reps: 10
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+    description: Dirsek açısı
+state_order:
+- up
+- lower
+- down
+states:
+  up:
+    condition: angle > 160
+  lower:
+    condition: angle > 90 and angle <= 160
+  down:
+    condition: angle <= 90
+rest_state: up
+counter:
+  trigger_state: up
+  from_state: down
+min_rep_duration: 0.8
+feedback:
+  shallow:
+    check: rep_end
+    condition: rep_min_angle > 90 and rep_min_angle < 150
+    message: 팔꿈치가 90°가 될 때까지 내려가세요
+    severity: info
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 255
+    - 165
+    - 0
+    thickness: 4
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 255
+    - 165
+    - 0
+    thickness: 4

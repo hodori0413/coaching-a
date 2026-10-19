@@ -1,0 +1,154 @@
+# 숄더 프레스 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/shoulder_press.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - arching_back: 원본(어깨가 엉덩이보다 100px 위)은 서 있기만 해도 걸림 → 측면에서 상체가 뒤로 10° 넘게 젖혀질 때
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: shoulder_press
+display_name: 숄더 프레스
+type: repetition
+view: front
+description: 정면에서 찍어주세요
+target_muscles:
+- Shoulders
+- Triceps
+- Upper Back
+equipment: Dumbbells or Barbell
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: 60 seconds
+benefits:
+- Builds shoulder strength
+- Improves overhead mobility
+- Strengthens triceps
+angles:
+  primary:
+    points:
+    - left_hip
+    - left_shoulder
+    - left_elbow
+    description: Sol omuz açısı
+  right_shoulder:
+    points:
+    - right_hip
+    - right_shoulder
+    - right_elbow
+    description: Sağ omuz açısı
+  left_elbow:
+    points:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+    description: Sol dirsek açısı
+  right_elbow:
+    points:
+    - right_shoulder
+    - right_elbow
+    - right_wrist
+    description: Sağ dirsek açısı
+state_order:
+- top
+- press
+- start
+states:
+  start:
+    condition: angle < 90
+  press:
+    condition: angle >= 90 and angle < 160
+  top:
+    condition: angle >= 160
+counter:
+  trigger_state: top
+  from_state: press
+min_rep_duration: 0.8
+feedback:
+  arching_back:
+    condition: trunk_lean < -10
+    view: side
+    message: 허리를 젖히지 마세요. 복부에 힘을 주세요
+    severity: warning
+  uneven_arms:
+    condition: abs(left_wrist_y - right_wrist_y) > 50
+    view: front
+    states:
+    - press
+    - top
+    message: 양팔을 같은 높이로 올리세요
+    severity: warning
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 255
+    - 165
+    - 0
+    thickness: 3
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 255
+    - 165
+    - 0
+    thickness: 3
+  - points:
+    - right_shoulder
+    - right_elbow
+    color:
+    - 255
+    - 165
+    - 0
+    thickness: 3
+  - points:
+    - right_elbow
+    - right_wrist
+    color:
+    - 255
+    - 165
+    - 0
+    thickness: 3
+  circles:
+  - point: left_shoulder
+    color:
+    - 255
+    - 165
+    - 0
+    radius: 8
+  - point: left_elbow
+    color:
+    - 255
+    - 165
+    - 0
+    radius: 8
+  - point: left_wrist
+    color:
+    - 255
+    - 165
+    - 0
+    radius: 8
+  - point: right_shoulder
+    color:
+    - 255
+    - 165
+    - 0
+    radius: 8
+  - point: right_elbow
+    color:
+    - 255
+    - 165
+    - 0
+    radius: 8
+  - point: right_wrist
+    color:
+    - 255
+    - 165
+    - 0
+    radius: 8

@@ -1,0 +1,62 @@
+# 레그 레이즈 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/leg_raise.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - 메시지 한국어화만
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: leg_raise
+display_name: 레그 레이즈
+type: repetition
+view: side
+description: 누운 상태를 옆에서 찍어주세요
+target_muscles:
+- Lower Abs
+- Hip Flexors
+equipment: Bodyweight
+difficulty: intermediate
+default_reps: 12
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_knee
+    description: Kalça açısı
+state_order:
+- up
+- raise
+- down
+states:
+  down:
+    condition: angle > 160
+  raise:
+    condition: angle > 100 and angle <= 160
+  up:
+    condition: angle <= 100
+counter:
+  trigger_state: up
+  from_state: raise
+min_rep_duration: 1.0
+feedback:
+  momentum:
+    condition: angle < 80
+    message: 반동 없이 천천히 올리세요
+    severity: warning
+visualization:
+  lines:
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 128
+    - 0
+    - 128
+    thickness: 4
+  - points:
+    - left_knee
+    - left_ankle
+    color:
+    - 128
+    - 0
+    - 128
+    thickness: 4

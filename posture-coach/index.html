@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>운동 자세 코치</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="top">
+    <h1>운동 자세 코치 <small>프로토타입</small></h1>
+  </header>
+
+  <main>
+    <section class="panel" id="setup">
+      <label class="field">
+        <span>운동</span>
+        <select id="exercise"></select>
+      </label>
+      <p id="exInfo" class="hint"></p>
+
+      <div class="actions">
+        <button id="btnCamera" class="primary">카메라로 시작</button>
+        <label class="button" for="fileInput">영상 촬영·불러오기</label>
+        <input id="fileInput" type="file" accept="video/*" hidden>
+        <button id="btnStop" hidden>멈추기</button>
+      </div>
+
+      <details class="settings">
+        <summary>설정</summary>
+        <label class="field inline"><span>카메라</span>
+          <select id="facing">
+            <option value="user">전면 (폰 세워두고 화면 보면서)</option>
+            <option value="environment">후면 (다른 사람이 찍어줄 때)</option>
+          </select>
+        </label>
+        <label class="field inline"><span>인식 모델</span>
+          <select id="model">
+            <option value="lite">빠름 (lite)</option>
+            <option value="full">정확 (full)</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="voice" checked> 음성 안내</label>
+        <label class="check"><input type="checkbox" id="debug"> 각도·인식 정보 보기</label>
+      </details>
+      <p id="status" class="status" role="status"></p>
+    </section>
+
+    <section class="stage" id="stage">
+      <video id="video" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <div class="hud">
+        <div class="hud-top">
+          <div class="count"><span id="count">0</span><small id="countSub"></small></div>
+          <div class="score" id="scoreBox" hidden><span id="grade">-</span><small id="score"></small></div>
+        </div>
+        <div id="notice" class="notice" hidden></div>
+        <ul id="messages" class="messages"></ul>
+      </div>
+      <pre id="debugBox" class="debug" hidden></pre>
+    </section>
+
+    <section class="panel" id="logPanel">
+      <h2>회차 기록</h2>
+      <div id="summary" class="summary"></div>
+      <ul id="repLog" class="replog"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

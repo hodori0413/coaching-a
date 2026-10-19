@@ -1,0 +1,181 @@
+# 해머 컬 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/hammer_curl.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - too_fast: 칭찬 메시지라 감점 없는 success로
+#  - partial_rep: 원본(각도>160)은 팔을 다 편 '정상' 자세에서 걸림 → 덜 올렸을 때 표시로 변경
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: hammer_curl
+display_name: 해머 컬
+type: repetition
+bilateral: true
+view: any
+description: 좌우 팔을 따로 셉니다
+target_muscles:
+- Biceps
+- Brachialis
+- Forearms
+equipment: Dumbbells
+difficulty: beginner
+default_reps: 8
+default_sets: 3
+rest_time: 60 seconds
+benefits:
+- Improves bicep and forearm strength
+- Enhances grip strength
+- Targets brachialis for arm thickness
+angles:
+  left:
+    points:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+    description: Sol kol dirsek açısı
+  right:
+    points:
+    - right_shoulder
+    - right_elbow
+    - right_wrist
+    description: Sağ kol dirsek açısı
+  left_alignment:
+    points:
+    - left_elbow
+    - left_shoulder
+    - left_hip
+    description: Sol kol hizalama açısı
+  right_alignment:
+    points:
+    - right_elbow
+    - right_shoulder
+    - right_hip
+    description: Sağ kol hizalama açısı
+state_order:
+- down
+- up
+- flex
+states:
+  flex:
+    condition: angle > 155
+  up:
+    condition: angle > 47 and angle <= 155
+  down:
+    condition: angle <= 47
+counter:
+  trigger_state: down
+  from_state: up
+min_rep_duration: 0.8
+feedback:
+  too_fast:
+    condition: angle < 40
+    message: 좋아요! 위에서 잠깐 멈추세요
+    severity: success
+  partial_rep:
+    check: rep_end
+    condition: rep_min_angle > 47 and rep_min_angle < 130
+    message: 끝까지 들어올리세요
+    severity: info
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 4
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 4
+  - points:
+    - right_shoulder
+    - right_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 4
+  - points:
+    - right_elbow
+    - right_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 4
+  circles:
+  - point: left_shoulder
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: left_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: left_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: right_shoulder
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: right_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: right_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  angle_display:
+  - angle: left
+    position: left_elbow
+    offset:
+    - 10
+    - -10
+    label: Left Angle
+  - angle: right
+    position: right_elbow
+    offset:
+    - 10
+    - -10
+    label: Right Angle
+  gauge_meters:
+  - angle: right
+    position:
+    - 1200
+    - 80
+    radius: 50
+    label: Right Gauge
+  - angle: left
+    position:
+    - 1200
+    - 240
+    radius: 50
+    label: Left Gauge
+sides:
+- left
+- right

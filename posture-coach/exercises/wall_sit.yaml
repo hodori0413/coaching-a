@@ -1,0 +1,63 @@
+# 월 싯 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/wall_sit.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - [버그] 유지 상태 이름이 맞지 않아 타이머가 안 돎 → hold_state: holding, target_duration: 30 추가
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: wall_sit
+display_name: 월 싯
+type: duration
+view: side
+description: 옆에서 찍어주세요
+target_muscles:
+- Quadriceps
+- Glutes
+equipment: Wall
+difficulty: beginner
+default_reps: 30
+default_sets: 3
+angles:
+  primary:
+    points:
+    - left_hip
+    - left_knee
+    - left_ankle
+    description: Diz açısı
+state_order:
+- holding
+- lowering
+- standing
+states:
+  standing:
+    condition: angle > 150
+  lowering:
+    condition: angle > 100 and angle <= 150
+  holding:
+    condition: angle <= 100
+hold_state: holding
+target_duration: 30
+min_rep_duration: 1.0
+feedback:
+  too_high:
+    condition: angle > 100
+    states:
+    - lowering
+    message: 무릎이 90°가 되게 더 내려가세요
+    severity: warning
+visualization:
+  lines:
+  - points:
+    - left_hip
+    - left_knee
+    color:
+    - 0
+    - 128
+    - 0
+    thickness: 4
+  - points:
+    - left_knee
+    - left_ankle
+    color:
+    - 0
+    - 128
+    - 0
+    thickness: 4

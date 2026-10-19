@@ -1,0 +1,162 @@
+# 푸시업 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/push_up.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - hips_sagging/hips_too_high: 원본(어깨·엉덩이 높이 차)은 팔을 편 정상 자세에서도 걸림 → 어깨-엉덩이-발목 일직선 각도로 변경
+#  - arms_too_wide: 측면에서는 팔 벌림을 볼 수 없어 정면 촬영일 때만 적용
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: push_up
+display_name: 푸시업
+type: repetition
+view: side
+description: 옆에서 찍어주세요
+target_muscles:
+- Chest
+- Triceps
+- Shoulders
+- Core
+equipment: Bodyweight
+difficulty: beginner
+default_reps: 10
+default_sets: 3
+rest_time: 45 seconds
+benefits:
+- Builds upper body strength
+- Improves core stability
+- No equipment needed
+angles:
+  primary:
+    points:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+    description: Sol kol dirsek açısı
+  right_arm:
+    points:
+    - right_shoulder
+    - right_elbow
+    - right_wrist
+    description: Sağ kol dirsek açısı
+  body_line:
+    points:
+    - left_shoulder
+    - left_hip
+    - left_ankle
+state_order:
+- ascent
+- descent
+- start
+states:
+  start:
+    condition: angle > 150
+  descent:
+    condition: angle > 70 and angle <= 150
+  ascent:
+    condition: angle <= 70
+counter:
+  trigger_state: ascent
+  from_state: descent
+min_rep_duration: 1.0
+feedback:
+  hips_too_high:
+    condition: body_line_angle < 165 and hip_line_offset < 0
+    view: side
+    message: 엉덩이가 너무 올라갔어요. 몸을 일직선으로
+    severity: warning
+  hips_sagging:
+    condition: body_line_angle < 165 and hip_line_offset > 0
+    view: side
+    message: 허리가 처졌어요. 복부에 힘을 주세요
+    severity: warning
+  arms_too_wide:
+    condition: abs(left_elbow_x - left_shoulder_x) > 100
+    view: front
+    message: 팔꿈치가 너무 벌어졌어요
+    severity: info
+form_score:
+  tempo_range:
+    min: 1.5
+    max: 6.0
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 2
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    thickness: 2
+  - points:
+    - right_shoulder
+    - right_elbow
+    color:
+    - 102
+    - 0
+    - 0
+    thickness: 2
+  - points:
+    - right_elbow
+    - right_wrist
+    color:
+    - 102
+    - 0
+    - 0
+    thickness: 2
+  circles:
+  - point: left_shoulder
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: left_elbow
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: left_wrist
+    color:
+    - 0
+    - 0
+    - 255
+    radius: 8
+  - point: right_shoulder
+    color:
+    - 102
+    - 0
+    - 0
+    radius: 8
+  - point: right_elbow
+    color:
+    - 102
+    - 0
+    - 0
+    radius: 8
+  - point: right_wrist
+    color:
+    - 102
+    - 0
+    - 0
+    radius: 8
+  angle_display:
+  - angle: primary
+    position: left_elbow
+    offset:
+    - 10
+    - -10
+    label: Angle

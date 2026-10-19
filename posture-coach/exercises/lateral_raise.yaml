@@ -1,0 +1,106 @@
+# 레터럴 레이즈 — 원본: yakupzengin/fitness-trainer-pose-estimation exercises/definitions/lateral_raise.yaml (MIT)
+# 원본의 각도·상태 기준값은 유지. 바꾼 점:
+#  - bent_elbows: 원본은 팔을 내린 시작 자세에서도 걸림 → 맨 위(top)에서만 확인
+#  - 메시지/이름 한국어화, view(촬영 방향) 추가
+
+name: lateral_raise
+display_name: 레터럴 레이즈
+type: repetition
+view: front
+description: 정면에서 찍어주세요
+target_muscles:
+- Shoulders (Lateral Deltoid)
+- Upper Trapezius
+equipment: Dumbbells
+difficulty: beginner
+default_reps: 12
+default_sets: 3
+rest_time: 45 seconds
+benefits:
+- Builds shoulder width
+- Improves shoulder stability
+- Isolates lateral deltoid
+angles:
+  primary:
+    points:
+    - left_hip
+    - left_shoulder
+    - left_elbow
+    description: Sol kol-gövde açısı
+  right_arm:
+    points:
+    - right_hip
+    - right_shoulder
+    - right_elbow
+    description: Sağ kol-gövde açısı
+state_order:
+- top
+- raise
+- start
+states:
+  start:
+    condition: angle < 30
+  raise:
+    condition: angle >= 30 and angle < 80
+  top:
+    condition: angle >= 80
+counter:
+  trigger_state: top
+  from_state: raise
+min_rep_duration: 0.6
+feedback:
+  swinging:
+    condition: abs(left_hip_y - right_hip_y) > 30
+    view: front
+    message: 몸을 흔들지 마세요. 천천히
+    severity: warning
+  too_high:
+    condition: angle > 100
+    message: 어깨 높이까지만 올리세요
+    severity: warning
+  bent_elbows:
+    condition: abs(left_shoulder_x - left_wrist_x) < 50
+    states:
+    - top
+    message: 팔꿈치를 너무 굽혔어요. 팔을 조금 더 펴세요
+    severity: info
+calibration:
+  enabled: true
+  reps: 3
+smoothing:
+  enabled: true
+  window: 3
+visualization:
+  lines:
+  - points:
+    - left_shoulder
+    - left_elbow
+    color:
+    - 147
+    - 112
+    - 219
+    thickness: 3
+  - points:
+    - left_elbow
+    - left_wrist
+    color:
+    - 147
+    - 112
+    - 219
+    thickness: 3
+  - points:
+    - right_shoulder
+    - right_elbow
+    color:
+    - 147
+    - 112
+    - 219
+    thickness: 3
+  - points:
+    - right_elbow
+    - right_wrist
+    color:
+    - 147
+    - 112
+    - 219
+    thickness: 3
